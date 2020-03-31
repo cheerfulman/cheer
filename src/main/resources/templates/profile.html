@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
+    <title>我的提问</title>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.js"></script>
+
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main profile">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <div th:if="${section == 'questions'}">
+                <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>我的提问</h2><hr>
+                <div th:if="${pagination.getT().size() == 0}">
+                    <img src="/images/profile.jpg">
+                    <h3>妹子好看吗，快去提问吧？</h3>
+                </div>
+                <div class="media" th:each="question : ${pagination.getT()}" >
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a th:href="@{/question/{id}(id=${question.getId()})}" th:text="${question.getTitle()}"></a>
+                        </h4>
+<!--                        <span >[[${question.getDescription()}]]</span> <br>-->
+                        <span class="text-desc">[[${question.getCommentCount()}]] 个评论 • [[${question.getViewCount()}]] 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd')}"></span>
+                    </span>
+                        <a th:href="@{/publish/{id}(id=${question.getId()})}" class="community-menu pull-right"
+                           th:if="${session.user != null && session.user.getId() == question.getCreator()}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="media" th:if="${section == 'replies'}">
+                <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>通知</h2><hr>
+                <div th:if="${pagination.getT() == null}">
+                    <h2>没有任何通知</h2>
+                </div>
+                <div th:if="${pagination.getT() != null}" th:each="notiee : ${pagination.getT()}">
+                    <div class="media-body">
+                        <p class="media-heading">
+                         <span style="color: deepskyblue">[[${notiee.getNoticeName()}]]</span>
+                            <span th:if="${notiee.getType() == 1}">回复了您的问题</span>
+                            <span th:if="${notiee.getType() == 2}">回复了您的评论</span>
+                             <a style="text-decoration: none" th:text="${notiee.getTitle()}" th:href="@{/notice/{noticeId}(noticeId=${notiee.getId()})}"></a>
+                            <span class="label label-danger" th:if="${notiee.getStatus() == 0}">有情报</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:if="${pagination.isFirst()}">
+                        <a th:href="@{'/profile/'+${section}(page=${1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagination.isPre()}">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.getCurrPage() - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+
+
+                    <li th:each="page : ${pagination.getPages()}" th:class="${pagination.getCurrPage() == page} ? 'active' : ''">
+                        <a  th:href="@{'/profile/'+${section}(page=${page})}" th:text="${page}"></a>
+                    </li>
+
+
+                    <li th:if="${pagination.isNext()}">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.getCurrPage() +1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagination.isEnd()}">
+                        <a th:href="@{'/profile/'+${section}(page=${pagination.totalPage})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;&gt;&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="list-group section">
+                <a href="/profile/questions" th:classappend="list-group-item" th:class="${section == 'questions'? 'active': ''}">我的问题</a>
+                <a href="/profile/replies" th:classappend="list-group-item" th:class="${section == 'replies'? 'active': ''}">最新回复
+                    <span class="badge" th:text="${session.unread}"></span></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

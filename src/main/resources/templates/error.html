@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
+    <title>Cheer</title>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/bootstrap.js"></script>
+
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="jumbotron errorPage">
+    <h1>哎呀，Cheerfulman不小心走丢拉</h1>
+    <p th:text="${message}">人气有点热，客官稍等再试试~</p>
+    <p><a class="btn btn-primary btn-lg" href="/" role="button">点击回到主页</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>HTML注册登录页面模板</title>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="css/register.css">
+
+
+</head>
+<script>
+
+    function check() {
+        $.ajax({
+            async:false,
+            type: "Post",
+            url: "/confirmUser",
+            data: {
+                "username":$("#username").val()
+            },
+            success:function (data) {
+                console.log(data);
+                if(data.toString() == "ok") {
+                    flag = false;
+                }else flag = true;
+            }
+        })
+        if(flag)return false;
+        var pwd1 = document.getElementById("pwd1").value;
+        pwd1 = pwd1.trim();
+        var pwd2 = document.getElementById("pwd2").value;
+        pwd2 = pwd2.trim();
+        console.log(pwd1);
+        console.log(pwd2);
+
+        if(pwd1 != pwd2){
+            alert("两次输入密码不一致");
+            // window.location.reload();
+            return false;
+        }else if(pwd1 == null){
+            alert("密码不允许有非法字符");
+            return false;
+        }else if(pwd1.length < 6 || pwd1.length > 15){
+            alert("请保持密码在 6 ~ 15 之间");
+            return false;
+        }
+        return true;
+
+    }
+
+    function confirmUser() {
+        $.post({
+            url: "/confirmUser",
+            data: {
+                "username":$("#username").val()
+            },
+            success:function (data) {
+                console.log(data);
+                if(data.toString() == "ok"){
+                    $("#userTip").css("color","green").css("font-size","medium");
+                }else{
+                    $("#userTip").css("color","red").css("font-size","medium");
+                }
+                $("#userTip").html(data);
+            }
+        })
+    }
+
+    function confirmPassword() {
+        $.post({
+            url: "/confirmPassword",
+            data: {
+                "password1": $("#pwd1").val(),
+                "password2": $("#pwd2").val()
+            },
+            success:function (data) {
+                console.log(data);
+                if(data.toString() == "成功"){
+                    $("#pwdTip").css("color","green").css("font-size","medium");
+                }else{
+                    $("#pwdTip").css("color","red").css("font-size","medium");
+                }
+                $("#pwdTip").html(data);
+            }
+        })
+    }
+</script>
+
+<body>
+<div class="content">
+    <div class="form sign-in">
+        <h2>欢迎回来</h2>
+        <form action="/login" method="post">
+            <label>
+                <span>用户名</span>
+                <input type="text" name = "username" th:value="${username}"/>
+                <span style="color: red; font-size: medium" th:if="${error2 != null}" th:text="${error2}"></span>
+            </label>
+            <label>
+                <span>密码</span>
+                <input type="password" name="password" th:value="${password}"/>
+                <span style="color: red; font-size: medium" th:if="${error3 != null}" th:text="${error3}"></span>
+            </label>
+            <p class="forgot-pass"><a href="javascript:">忘记密码？</a></p>
+            <button type="submit" class="submit">登 录</button>
+        </form>
+
+        <button type="button" class="fb-btn">
+            <a th:href="@{https://github.com/login/oauth/authorize(client_id='Iv1.3a1c7f4f34393f5b',redirect_uri=${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()+'/callback'},scope='user',state=1)}">
+                   <span>
+                        <img style="width: 25px; height: 25px;" src="/images/github.png">
+
+                    </span>
+            </a>
+
+        </button>
+    </div>
+
+    <div class="sub-cont">
+        <div class="img">
+            <div class="img__text m--up">
+                <h2>登录</h2>
+                <p>进入Cheer社区讨论问题。</p>
+            </div>
+            <div class="img__text m--in">
+                <h2>注册</h2>
+                <p>快来Cheer社区，参加讨论吧！</p>
+            </div>
+            <div class="img__btn">
+                <span class="m--up">注 册</span>
+                <span class="m--in">登 录</span>
+            </div>
+        </div>
+
+        <div class="form sign-up">
+            <h2>立即注册</h2>
+            <form action="/register" method="post">
+                <label>
+                    <span>用户名</span>
+                    <input type="text" name = "username" onblur="confirmUser()" id = "username"/>
+                    <span id="userTip"></span>
+
+                </label>
+                <label>
+                    <span>密码</span>
+                    <input type="password" name="password" id="pwd1" th:value="${password}" required/>
+                </label>
+                <label>
+                    <span>确认密码</span>
+                    <input type="password" id="pwd2" th:value="${password}" onblur="confirmPassword()" required/>
+                    <span id="pwdTip"></span>
+                </label>
+
+                <button type="submit" class="submit" onclick="return check();">注 册</button>
+            </form>
+            <button type="button" class="fb-btn">
+
+                <a th:href="@{https://github.com/login/oauth/authorize(client_id='Iv1.3a1c7f4f34393f5b',redirect_uri=${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()+'/callback'},scope='user',state=1)}">
+                   <span>
+                        <img style="width: 25px; height: 25px;" src="/images/github.png">
+
+                    </span>
+                </a>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--<div style="text-align:center;">-->
+<!--    <h1 th:text="${error1}" style="color: red"></h1>-->
+<!--</div>-->
+<script>
+    document.querySelector('.img__btn').addEventListener('click', function() {
+        document.querySelector('.content').classList.toggle('s--signup')
+    })
+</script>
+
+
+</body>
+</html>

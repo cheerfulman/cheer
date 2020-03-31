@@ -1,0 +1,42 @@
+server:
+  port: 8081
+
+github:
+  client:
+   id: Iv1.3a1c7f4f34393f5b
+   secret: c0ef37c81b42ef3d8a0e89e37fb64a823a6ac326
+  redirect:
+   uri: http://localhost:8081/callback
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/communications?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: root
+  thymeleaf:
+    cache: false
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+aliyun:
+  accessKeyId: LTAI4Fj5cMwyC8sKS4CQZyxM
+  accessKeySecret: uNN4HVWWsLgGlgNBZCGBUjlEBvia4p
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    bucketName: cheerfulman
+    urlPrefix: https://cheerfulman.oss-cn-beijing.aliyuncs.com/
+
+#logging:
+#  file:
+#    max-history: 15
+#    max-size: 100MB
+#  level:
+#    root: debug
+#    com:
+#      zhu:
+#        mapper: debug
+
+

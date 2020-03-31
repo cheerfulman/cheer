@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
+    <title>Cheer</title>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/community.css">
+    <script src="js/bootstrap.js"></script>
+
+</head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closabe = window.localStorage.getItem("closable");
+        if(closabe == "true"){
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
+<body>
+    <div th:insert="~{navigation :: nav}"></div>
+    <div class="container-fluid main">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>发现</h2><hr>
+
+                <div class="media" th:each="question : ${pagination.getT()}">
+                    <div class="media-left">
+                        <a th:href="@{/question/{id}(id=${question.getId()})}">
+                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a th:href="@{/question/{id}(id=${question.getId()})}" th:text="${question.getTitle()}"></a>
+                        </h4>
+<!--                        <span >[[${question.getDescription()}]]</span> <br>-->
+                        <span class="text-desc">[[${question.getCommentCount()}]] 个评论 • [[${question.getViewCount()}]] 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd')}"></span></span>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li th:if="${pagination.isFirst()}">
+                            <a href="/?page=1" aria-label="Previous">
+                                <span aria-hidden="true">&lt;&lt;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.isPre()}">
+                            <a th:href="@{/(page=${pagination.getCurrPage()-1})}" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+
+
+                        <li th:each="page : ${pagination.getPages()}" th:class="${pagination.getCurrPage() == page} ? 'active' : ''">
+                            <a  th:href="@{/(page=${page})}" th:text="${page}"></a>
+                        </li>
+
+
+                        <li th:if="${pagination.isNext()}">
+                            <a th:href="@{/(page=${pagination.getCurrPage()+1})}" aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.isEnd()}">
+                            <a th:href="@{/(page=${pagination.getTotalPage()})}" aria-label="Next">
+                                <span aria-hidden="true">&gt;&gt;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4 style="font-weight: bold">欢迎光临</h4>
+                    <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: 0px 0px 10px">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <img class="img-thumbnail" src="/images/you.jpg">
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <img class="img-thumbnail" src="/images/me.jpg">
+                    </div>
+                </div>
+
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2>行路难 （其一）</h2>
+                金樽清酒斗十千，玉盘珍羞直万钱。<br>
+                停杯投箸不能食，拔剑四顾心茫然。<br>
+                欲渡黄河冰塞川，将登太行雪满山。<br>
+                闲来垂钓碧溪上，忽复乘舟梦日边。<br>
+                行路难，行路难，多歧路，今安在？<br>
+                长风破浪会有时，直挂云帆济沧海。<br>
+                <img src="images/road.jpg" style="width: 224px;">
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
