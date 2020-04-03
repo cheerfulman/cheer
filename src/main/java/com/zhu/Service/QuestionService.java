@@ -119,7 +119,7 @@ public class QuestionService {
         return questionDTOS;
     }
 
-    public paginationDTO listAllQuestions(Integer totalQuestion, Integer page, Integer size) {
+    public paginationDTO listAllQuestions(String search,Integer totalQuestion, Integer page, Integer size) {
         //总页面 totalPage
         Integer totalPage = (totalQuestion+size-1)/size;
         //处理 错误 页面
@@ -141,7 +141,7 @@ public class QuestionService {
             return paginationDTO;
         }
         //所有发布的问题
-        List<Question> list = questionMapper.queryAll1(offset,size);
+        List<Question> list = questionMapper.queryAll1(search,offset,size);
 
         //将所有 发布的问题question 加上 User 里面的头像参数
         for(Question question : list){
@@ -160,7 +160,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public Integer countPage() {
-        return questionMapper.countPage();
+    public Integer countPage(String search) {
+        return questionMapper.countPage(search);
     }
 }

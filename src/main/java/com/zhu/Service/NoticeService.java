@@ -21,8 +21,6 @@ public class NoticeService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private CommentMapper commentMapper;
-    @Autowired
     private NoticeMapper noticeMapper;
 
     //回复的评论

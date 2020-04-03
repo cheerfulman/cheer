@@ -2,6 +2,7 @@ package com.zhu.controller;
 
 import com.zhu.Service.QuestionService;
 import com.zhu.DTO.paginationDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +22,14 @@ public class HelloControler {
     @GetMapping("/")
     public String hello(Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
-                        @RequestParam(name = "size",defaultValue = "5") Integer size){
+                        @RequestParam(name = "size",defaultValue = "5") Integer size,
+                        @RequestParam(name = "search",required = false) String search){
+        if(StringUtils.isBlank(search))search = null;
+        else search = search.replaceAll(" ","|");
+        Integer totalQuestion = questionService.countPage(search);
 
-        Integer totalQuestion = questionService.countPage();
-
-        paginationDTO pagination = questionService.listAllQuestions(totalQuestion,page,size);
-
+        paginationDTO pagination = questionService.listAllQuestions(search,totalQuestion,page,size);
+        model.addAttribute("search",search);
         model.addAttribute("pagination",pagination);
         return "index";
     }

@@ -28,11 +28,6 @@ public class FileController {
         MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getOriginalFilename(), file.getContentType(), file.getInputStream());
         String url = ossProvider.upload(multipartFile, file.getContentType());
 
-//        File file = new File("F:" + File.separator + "cheer.jpg");
-//        FileInputStream fileInputStream = new FileInputStream(file);
-//
-//        MultipartFile multipartFile = new MockMultipartFile("cheer.jpg", "cheer.jpg", "jpg", fileInputStream);
-//        System.out.println(ossProvider.upload(multipartFile,"jpg"));
         FileDTO fileDTO = new FileDTO();
         fileDTO.setUrl(url);
         fileDTO.setSuccess(1);

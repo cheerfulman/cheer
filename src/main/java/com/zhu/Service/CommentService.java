@@ -66,13 +66,14 @@ public class CommentService {
             return new ArrayList<>();
         }
 
-        //获取去重评论人
+        //将所有评论 的 评论人id 去重
         Set<Long> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
 
 
         List<Long> userIds = new ArrayList<>();
         userIds.addAll(commentators);
 
+        // 将 ID 与 用户映射
         Map<Long,User> map = new HashMap<>();
         for (Long userId : userIds) {
             User user = userMapper.findById(userId);

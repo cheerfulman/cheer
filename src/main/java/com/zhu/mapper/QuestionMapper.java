@@ -18,8 +18,16 @@ public interface QuestionMapper {
     @Select("select * from question where creator = #{id} order by gmt_create desc limit #{offset},#{size}")
     List<Question> queryAll(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size, @Param("id") Long id);
 
-    @Select("select count(1) from question")
-    Integer countPage();
+    @Select({"<script>"
+            + "select count(1) from question" +
+            "<where>" +
+            "<if test = 'search != null'>" +
+            "and title regexp #{search}" +
+            "</if>" +
+            "</where>" +
+            "</script>"
+    })
+    Integer countPage(String search);
 
     @Select("select * from question where creator = #{id}")
     List<Question> queryQuestionByUserId(@Param(value = "id") Long id);
@@ -37,8 +45,18 @@ public interface QuestionMapper {
     int addComment(@Param("id") Long id);
 
     @Select("select * from question where tag regexp #{tag} and id != #{id}")
-    List<QuestionDTO> selectRelative(QuestionDTO questionDTO);
+    List<QuestionDTO>
+    selectRelative(QuestionDTO questionDTO);
 
-    @Select("select * from question order by gmt_create desc limit #{offset},#{size}")
-    List<Question> queryAll1(Integer offset, Integer size);
+    @Select({"<script>" +
+            "select * from question " +
+            "<where>" +
+            "<if test='search != null'>" +
+            "and title regexp #{search}" +
+            "</if>" +
+            "</where>" +
+            "order by gmt_create desc limit #{offset},#{size}" +
+            "</script>"
+    })
+    List<Question> queryAll1(String search, Integer offset, Integer size);
 }
