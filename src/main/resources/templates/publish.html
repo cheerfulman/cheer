@@ -41,7 +41,7 @@
                                 height : "700px",
                                 path   : "/js/lib/",
                                 delay : 0,
-                                watch :true,
+                                watch :false,
                                 placeholder : "写点想说的把...",
                                 imageUpload    : true,
                                 imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
@@ -69,7 +69,8 @@
 
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane" th:id="${selectCategory.getCategoryName()}"
-                                     th:each="selectCategory: ${tags}">
+                                     th:each="selectCategory: ${tags}"
+                                     th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
 
                                     <span>
                                         <span class="label label-info" th:each="selectTag: ${selectCategory.getTags()}">

@@ -33,8 +33,6 @@ public class AuthorizeController {
     private UserService userService;
 
     @Autowired
-    private NoticeService noticeService;
-    @Autowired
     private UserMapper userMapper;
 
     /**
@@ -61,6 +59,7 @@ public class AuthorizeController {
          * 再次 通过令牌 访问github得到该用户的信息
          */
         GithubUser githubUser = githubProvider.getUser(accessToKen);
+
 
         if(githubUser != null && githubUser.getId() != null){
 

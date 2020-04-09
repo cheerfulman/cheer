@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserService {
     @Autowired
@@ -21,6 +23,7 @@ public class UserService {
         if(dbUser == null){
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setPassword(UUID.randomUUID().toString().replaceAll("-"," ").substring(20));
             userMapper.insert(user);
 
         }else{
