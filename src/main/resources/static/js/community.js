@@ -35,6 +35,58 @@ function post() {
     });
 }
 
+function like(obj,type) {
+    // let user = window.sessionStorage.getItem("user");
+    // let user = session.getAttribute("user");
+    // var user = ${session.user};
+    // var user = '<%=session.getAttribute("user")%>';
+    // var user = $.session.get('user');
+    // let user = localStorage.getItem("user");
+
+    // var id = e.getAttribute("data-id");
+
+    // var user1 = obj.getAttribute("data-user");
+    var subjectId = obj.getAttribute("data-id");
+    // obj.classList.add("active");
+    // obj.removeClass('active');
+    $.ajax({
+        type : "post",
+        url : "/like",
+        // contentType : "application/json",
+        data: {
+            "type" : type,
+            "subjectId" : subjectId
+            // "user" : user1
+        },
+        success : function (response) {
+
+            if(response.code == 2003){
+                var isAccepted = confirm(response.message);
+                if(isAccepted){
+                    window.open("/register");
+                    window.localStorage.setItem("closable","true");
+                }else {
+                    alert(response.message);
+                }
+            }else{
+                // alert(response.count);
+                // response = $.parseJSON(response);
+                if(response.likeStatus == true){
+                    $(obj).addClass("active");
+                    //obj.classList.add("active");
+                }else{
+                    $(obj).removeClass('active');
+                }
+                // $(obj).children("i").text(response.count);
+                    $(obj).text(response.count);
+            }
+
+        },
+
+    });
+}
+
+
 function comment(e) {
     // 评论人 ID
     var commentator = $("#commentator").val();

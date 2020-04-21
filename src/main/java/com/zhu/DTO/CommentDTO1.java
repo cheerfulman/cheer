@@ -17,5 +17,4 @@ public class CommentDTO1 {
     private String content;
     private Integer commentCount;
     private User user;
-
 }

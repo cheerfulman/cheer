@@ -19,6 +19,9 @@ public class NoticeService {
     private QuestionMapper questionMapper;
 
     @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
     private UserMapper userMapper;
     @Autowired
     private NoticeMapper noticeMapper;
@@ -53,6 +56,7 @@ public class NoticeService {
     //回复了问题
     public void noticeTypeQuestion(Comment comment){
         Notification notification = new Notification();
+
         notification.setType(NotificationEnum.REPLAY_QUESTION.getType());
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setNotifier(comment.getCommentator());
@@ -64,6 +68,7 @@ public class NoticeService {
         //获取用户的名字
         User user = userMapper.findById(comment.getCommentator());
         notification.setNoticeName(user.getName());
+
         //获取问题的题目
         notification.setTitle(question.getTitle());
         notification.setOuterId(comment.getParentId());
@@ -71,6 +76,42 @@ public class NoticeService {
     }
     public Integer CountNotice(Long id){
         return noticeMapper.queryAllNoticeByUserId(id);
+    }
+    // 点赞通知
+    public void noticeTypeLike(Long subjectId,Long postId){
+
+        Notification notification = new Notification();
+        // 通知类型为点赞
+        notification.setType(NotificationEnum.REPLAY_LIKE.getType());
+        // 创建时间
+        notification.setGmtCreate(System.currentTimeMillis());
+        // 被点赞 评论 Id
+        Comment comment = commentMapper.queryById(subjectId);
+        notification.setReceiver(comment.getCommentator());
+        // 点赞人的 id
+        notification.setNotifier(postId);
+        // 未读状态
+        notification.setStatus(0);
+        // 得到 点赞人的名字
+        User user = userMapper.findById(postId);
+        notification.setNoticeName(user.getName());
+
+        // 提示文字 title
+
+        int len = comment.getContent().length();
+        System.out.println(len);
+        // 如果评论的字数大于7，就取前7 + 三个.
+        if(len >= 7){
+            String title = comment.getContent().substring(0,5) + "...";
+            notification.setTitle(title);
+        }else{
+            notification.setTitle(comment.getContent());
+        }
+        notification.setOuterId(comment.getParentId());
+        noticeMapper.insert(notification);
+
+//        Question question = questionMapper.queryByQueId(comment.getParentId());
+
     }
 
 

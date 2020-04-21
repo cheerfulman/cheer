@@ -1,6 +1,7 @@
 package com.zhu.Service;
 
 
+import com.zhu.Redis.LikeService;
 import com.zhu.enums.CommentTypeEnum;
 import com.zhu.exception.CustomizeErrorCode;
 import com.zhu.exception.CustomizeException;
@@ -22,6 +23,8 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private NoticeService noticeService;
     @Autowired
@@ -87,6 +90,9 @@ public class CommentService {
             return commentDTO1;
         }).collect(Collectors.toList());
 
+        for(CommentDTO1 c: commentDTO1s){
+            c.setLikeCount(likeService.count("like_comment",c.getId()));
+        }
         return commentDTO1s;
     }
 }

@@ -24,6 +24,7 @@ public class FileController {
     @ResponseBody
     public FileDTO upload(HttpServletRequest request) throws Exception {
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("editormd-image-file");
         MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getOriginalFilename(), file.getContentType(), file.getInputStream());
         String url = ossProvider.upload(multipartFile, file.getContentType());

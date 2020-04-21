@@ -39,8 +39,8 @@ public class CommentController {
         if(commentDTO == null || StringUtils.isBlank(commentDTO.getContent())){
             return ResultDTO.errorOf(CustomizeErrorCode.COMMENT_NOT_FOUNT);
         }
-        Comment comment = new Comment();
 
+        Comment comment = new Comment();
         comment.setParentId(commentDTO.getParentId());
         comment.setContent(commentDTO.getContent());
         comment.setType(commentDTO.getType());

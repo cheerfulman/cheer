@@ -79,7 +79,7 @@ public class QuestionService {
 
     public QuestionDTO questionGetById(Long id){
         Question question = (Question) questionMapper.queryByQueId(id);
-        System.out.println(question);
+//        System.out.println(question);
         if(question == null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
@@ -87,7 +87,7 @@ public class QuestionService {
         BeanUtils.copyProperties(question,questionDTO);
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
-        System.out.println(questionDTO);
+//        System.out.println(questionDTO);
         return questionDTO;
     }
 

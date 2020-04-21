@@ -1,5 +1,6 @@
 package com.zhu.interceptor;
 
+import com.zhu.Redis.LikeService;
 import com.zhu.Service.NoticeService;
 import com.zhu.mapper.UserMapper;
 import com.zhu.pojo.User;
@@ -14,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -35,6 +39,7 @@ public class SessionInterceptor implements HandlerInterceptor {
                 }
             }
         }
+
         // true 就会继续 执行
         return true;
     }

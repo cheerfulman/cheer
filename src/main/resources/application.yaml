@@ -29,15 +29,15 @@ aliyun:
     bucketName: cheerfulman
     urlPrefix: https://cheerfulman.oss-cn-beijing.aliyuncs.com/
 
-logging:
-  file:
-    max-history: 15
-    max-size: 100MB
-  level:
-    root: debug
-    com:
-      zhu:
-        mapper: debug
+#logging:
+#  file:
+#    max-history: 15
+#    max-size: 100MB
+#  level:
+#    root: debug
+#    com:
+#      zhu:
+#        mapper: debug
 
 
 
